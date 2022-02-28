@@ -60,7 +60,7 @@ def energy_func(encoded_msg, one_point_stat, transition_mat, permutation):
 
 
 def mcmc(num_iters, beta, encoded_msg, one_point_stat, transition_mat,
-         plot_save_path, start_state='abcdefghijklmnopqrstuvwxyz ', plot_every=50):
+         plot_save_path, start_state='abcdefghijklmnopqrstuvwxyz ', plot_every=1):
     """
     markov chain monte carlo
     try to sample the correct permutation according to a Gibbs distribution
