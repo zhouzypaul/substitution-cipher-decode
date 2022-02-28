@@ -7,6 +7,7 @@ import random
 import math
 from copy import deepcopy
 
+import matplotlib.pyplot as plt
 import numpy as np
 
 from data_mining import get_one_point_statistics, get_transition_matrix, \
@@ -59,21 +60,28 @@ def energy_func(encoded_msg, one_point_stat, transition_mat, permutation):
 
 
 def mcmc(num_iters, beta, encoded_msg, one_point_stat, transition_mat,
-         start_state='abcdefghijklmnopqrstuvwxyz '):
+         plot_save_path, start_state='abcdefghijklmnopqrstuvwxyz ', plot_every=50):
     """
     markov chain monte carlo
     try to sample the correct permutation according to a Gibbs distribution
+    make a plot of the energy of walk throught the random graph, record the energy
+    every `plot_every` iterations
     """
     current_state = start_state
+    energy = lambda state: energy_func(encoded_msg, one_point_stat, transition_mat, state)
+    energy_list = []
     # start iteration
     for i in range(num_iters):
         print(f"iteration {i}")
+
+        # record the energy
+        if i % plot_every == 0:
+            energy_list.append(energy(current_state))
 
         # choose a neighbor of current state uniformly at random
         next_state = swap_element(current_state)
 
         # accept or reject according to energy change
-        energy = lambda state: energy_func(encoded_msg, one_point_stat, transition_mat, state)
         energy_diff = energy(next_state) - energy(current_state)
         if energy_diff < 0:
             current_state = next_state
@@ -85,6 +93,13 @@ def mcmc(num_iters, beta, encoded_msg, one_point_stat, transition_mat,
             else:
                 # reject
                 pass
+        
+    # plot the energy trajectory
+    plt.plot(plot_every * np.arange(len(energy_list)), energy_list)
+    plt.xlabel('Steps')
+    plt.ylabel('Energy')
+    plt.title('Energy of Walk Through Random Graph')
+    plt.savefig(plot_save_path)
     
     return current_state
 
@@ -144,6 +159,7 @@ def main():
         encoded_msg=encoded,
         one_point_stat=one_point_stat,
         transition_mat=transition_matrix,
+        plot_save_path=args.save_path[:-4] + '_energy.png',
     )
     print(final_permutation)
 
