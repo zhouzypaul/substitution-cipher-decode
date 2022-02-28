@@ -4,6 +4,7 @@ about the English language, and then calculate the likelihood function
 """
 import re
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 legal_chars = 'abcdefghijklmnopqrstuvwxyz '
@@ -82,10 +83,27 @@ def get_transition_matrix(data):
     return Q
 
 
+def visualize(freq, Q):
+    """
+    visualize the one-point frequencies and the transition matrix Q
+    """
+    plt.imshow(np.array(list(freq.values()), dtype=np.float32).reshape((1, -1)), cmap='Blues')
+    plt.colorbar(orientation="horizontal")
+    plt.xticks(range(len(freq)), list(freq.keys()))
+    plt.yticks([], [])
+    plt.show()
+
+    plt.imshow(Q, cmap='Blues')
+    plt.colorbar()
+    plt.xticks(range(len(freq)), list(freq.keys()))
+    plt.yticks(range(len(freq)), list(freq.keys()))
+    plt.show()
+    plt.close()
+
+
 if __name__ == '__main__':
     # for debugging purposes
     data = load_data()
-    print(data)
     print(len(data))
 
     freq = get_one_point_statistics(data)
@@ -95,3 +113,5 @@ if __name__ == '__main__':
     Q = get_transition_matrix(data)
     print(Q)
     print(Q.shape)
+
+    visualize(freq, Q)
