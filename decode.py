@@ -98,7 +98,7 @@ def mcmc(num_iters, beta, encoded_msg, one_point_stat, transition_mat,
     plt.plot(plot_every * np.arange(len(energy_list)), energy_list)
     plt.xlabel('Steps')
     plt.ylabel('Energy')
-    plt.title('Energy of Walk Through Random Graph')
+    plt.title('Energy of Walk Through Metropolis Graph')
     plt.savefig(plot_save_path)
     
     return current_state
