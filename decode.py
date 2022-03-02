@@ -72,7 +72,7 @@ def mcmc(num_iters, beta, encoded_msg, one_point_stat, transition_mat,
     energy_list = []
     # start iteration
     for i in range(num_iters):
-        print(f"iteration {i}")
+        print(f"iteration {i}. energy: {energy(current_state)}. currnent: {current_state}")
 
         # record the energy
         if i % plot_every == 0:
@@ -143,6 +143,7 @@ def main():
 
     # set random seed
     random.seed(0)
+    np.random.seed(0)
 
     # load the code
     encoded = load_encoded_message(args.code)
