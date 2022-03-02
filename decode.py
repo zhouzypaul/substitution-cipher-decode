@@ -139,11 +139,13 @@ def main():
                             help='the beta parameter of the Gibbs distribution')
     parser.add_argument('--num_iters', type=int, default=100000,
                             help='the number of iterations to run MCMC')
+    parser.add_argument('--seed', type=int, default=0,
+                            help='the seed for random number generator')
     args = parser.parse_args()
 
     # set random seed
-    random.seed(0)
-    np.random.seed(0)
+    random.seed(args.seed)
+    np.random.seed(args.seed)
 
     # load the code
     encoded = load_encoded_message(args.code)
